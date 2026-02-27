@@ -5,6 +5,10 @@ This is a Spring Boot web application for managing:
 - Members
 - Loans (issue and return flow)
 
+## Live Demo
+- Live Link: `https://lib-manage.onrender.com` (available after Render deploy completes)
+- One-click deploy: [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AGzDeepak/lib-manage)
+
 ## Tech Stack
 - Java 21+
 - Spring Boot
@@ -56,6 +60,14 @@ To run with MySQL profile:
 ```bash
 mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=mysql
 ```
+
+## Deploy (Render)
+This repo is pre-configured for Render with `Dockerfile` and `render.yaml`.
+
+Steps:
+1. Click the `Deploy to Render` button above.
+2. Authorize Render and create the web service.
+3. Open the generated Render URL and update the `Live Link` line in this README if Render assigns a different subdomain.
 
 ## Test
 

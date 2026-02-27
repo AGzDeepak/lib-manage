@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: lib-manage
+    env: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /login
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: h2

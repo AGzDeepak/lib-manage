@@ -1,0 +1,10 @@
+.git
+.github
+target
+data
+*.log
+*.out
+*.err
+*.cookies
+.vscode
+.idea
