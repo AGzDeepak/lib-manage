@@ -6,7 +6,6 @@ This is a Spring Boot web application for managing:
 - Loans (issue and return flow)
 
 ## Live Demo
-- Live Link: `https://lib-manage.onrender.com`
 - Live link : 'https://lib-manage-402a.onrender.com'
 
 
