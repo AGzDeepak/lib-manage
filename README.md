@@ -6,7 +6,7 @@ This is a Spring Boot web application for managing:
 - Loans (issue and return flow)
 
 ## Live Demo
-- Live Link: `https://lib-manage.onrender.com` (available after Render deploy completes)
+- Live Link: `https://lib-manage.onrender.com` 
 - One-click deploy: [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AGzDeepak/lib-manage)
 
 ## Tech Stack
