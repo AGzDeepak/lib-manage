@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${member.id == null} ? 'Add Member | Library Management' : 'Edit Member | Library Management'">Member Form</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <a class="nav-link" th:href="@{/books}">Books</a>
+            <a class="nav-link active" th:href="@{/members}">Members</a>
+            <a class="nav-link" th:href="@{/loans}">Loans</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container narrow">
+    <section class="panel">
+        <h1 th:text="${member.id == null} ? 'Add New Member' : 'Edit Member'">Member</h1>
+        <form th:object="${member}" method="post"
+              th:action="${member.id == null} ? @{/members} : @{/members/{id}(id=${member.id})}">
+            <input type="hidden" th:field="*{id}">
+
+            <label for="name">Name</label>
+            <input id="name" type="text" th:field="*{name}">
+            <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}">
+            <p class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+            <label for="phone">Phone</label>
+            <input id="phone" type="text" th:field="*{phone}">
+            <p class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Save</button>
+                <a class="btn btn-light" th:href="@{/members}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

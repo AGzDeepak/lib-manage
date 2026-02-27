@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Library Management</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="login-page">
+<main class="login-shell">
+    <section class="login-card">
+        <h1>Library Login</h1>
+        <p class="login-subtitle">Sign in as admin or user</p>
+
+        <div class="alert error" th:if="${param.error}">
+            Invalid username or password.
+        </div>
+        <div class="alert success" th:if="${param.logout}">
+            Logged out successfully.
+        </div>
+
+        <form id="loginForm" th:action="@{/login}" method="post">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Login</button>
+            </div>
+        </form>
+
+        <p class="credentials">
+            Admin: <code>admin / admin123</code><br>
+            User: <code>user / user123</code>
+        </p>
+    </section>
+</main>
+<script>
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function () {
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            if (username) username.value = username.value.trim().toLowerCase();
+            if (password) password.value = password.value.trim();
+        });
+    }
+</script>
+</body>
+</html>

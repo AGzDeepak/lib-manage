@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loans | Library Management</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <a class="nav-link" th:href="@{/books}">Books</a>
+            <a class="nav-link" th:href="@{/members}">Members</a>
+            <a class="nav-link active" th:href="@{/loans}">Loans</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <div class="panel-head">
+            <h1>Loans</h1>
+            <a class="btn" th:href="@{/loans/new}" sec:authorize="hasRole('ADMIN')">Issue Book</a>
+        </div>
+
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(loans)}">
+                    <td colspan="7">No loan records found.</td>
+                </tr>
+                <tr th:each="loan : ${loans}">
+                    <td th:text="${loan.book.title}">Book</td>
+                    <td th:text="${loan.member.name}">Member</td>
+                    <td th:text="${loan.issueDate}">2026-01-01</td>
+                    <td th:text="${loan.dueDate}">2026-01-15</td>
+                    <td th:text="${loan.returnDate ?: '-'}">-</td>
+                    <td>
+                        <span class="badge"
+                              th:classappend="${loan.status.name() == 'RETURNED'} ? ' returned' : (${loan.status.name() == 'OVERDUE'} ? ' overdue' : '')"
+                              th:text="${loan.status}">ISSUED</span>
+                    </td>
+                    <td>
+                        <div sec:authorize="hasRole('ADMIN')">
+                            <form th:if="${loan.active}" th:action="@{/loans/{id}/return(id=${loan.id})}" method="post">
+                                <button type="submit" class="btn btn-light">Mark Returned</button>
+                            </form>
+                            <span th:if="${!loan.active}">Closed</span>
+                        </div>
+                        <span sec:authorize="hasRole('USER')">View only</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

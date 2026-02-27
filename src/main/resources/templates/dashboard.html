@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Library Management</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link active" th:href="@{/dashboard}">Dashboard</a>
+            <a class="nav-link" th:href="@{/books}">Books</a>
+            <a class="nav-link" th:href="@{/members}">Members</a>
+            <a class="nav-link" th:href="@{/loans}">Loans</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="cards">
+        <article class="card">
+            <h2>Total Books</h2>
+            <p th:text="${bookCount}">0</p>
+        </article>
+        <article class="card">
+            <h2>Total Members</h2>
+            <p th:text="${memberCount}">0</p>
+        </article>
+        <article class="card">
+            <h2>Active Loans</h2>
+            <p th:text="${activeLoanCount}">0</p>
+        </article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Recent Loans</h2>
+            <a class="btn" th:href="@{/loans/new}" sec:authorize="hasRole('ADMIN')">Issue Book</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(recentLoans)}">
+                    <td colspan="5">No loans yet.</td>
+                </tr>
+                <tr th:each="loan : ${recentLoans}">
+                    <td th:text="${loan.book.title}">Book Name</td>
+                    <td th:text="${loan.member.name}">Member Name</td>
+                    <td th:text="${loan.issueDate}">2026-01-01</td>
+                    <td th:text="${loan.dueDate}">2026-01-15</td>
+                    <td>
+                        <span class="badge"
+                              th:classappend="${loan.status.name() == 'RETURNED'} ? ' returned' : (${loan.status.name() == 'OVERDUE'} ? ' overdue' : '')"
+                              th:text="${loan.status}">ISSUED</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

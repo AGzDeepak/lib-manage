@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied | Library Management</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container narrow">
+    <section class="panel">
+        <h1>Access Denied</h1>
+        <p>You do not have permission to open this page.</p>
+        <div class="form-actions">
+            <a class="btn" th:href="@{/dashboard}">Back to Dashboard</a>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${book.id == null} ? 'Add Book | Library Management' : 'Edit Book | Library Management'">Book Form</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <a class="nav-link active" th:href="@{/books}">Books</a>
+            <a class="nav-link" th:href="@{/members}">Members</a>
+            <a class="nav-link" th:href="@{/loans}">Loans</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container narrow">
+    <section class="panel">
+        <h1 th:text="${book.id == null} ? 'Add New Book' : 'Edit Book'">Book</h1>
+        <form th:object="${book}" method="post"
+              th:action="${book.id == null} ? @{/books} : @{/books/{id}(id=${book.id})}">
+            <input type="hidden" th:field="*{id}">
+
+            <label for="title">Title</label>
+            <input id="title" type="text" th:field="*{title}">
+            <p class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+
+            <label for="author">Author</label>
+            <input id="author" type="text" th:field="*{author}">
+            <p class="field-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></p>
+
+            <label for="isbn">ISBN</label>
+            <input id="isbn" type="text" th:field="*{isbn}">
+            <p class="field-error" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></p>
+
+            <label for="totalCopies">Total Copies</label>
+            <input id="totalCopies" type="number" min="1" th:field="*{totalCopies}">
+            <p class="field-error" th:if="${#fields.hasErrors('totalCopies')}" th:errors="*{totalCopies}"></p>
+
+            <label for="availableCopies">Available Copies</label>
+            <input id="availableCopies" type="number" min="0" th:field="*{availableCopies}">
+            <p class="field-error" th:if="${#fields.hasErrors('availableCopies')}" th:errors="*{availableCopies}"></p>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Save</button>
+                <a class="btn btn-light" th:href="@{/books}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

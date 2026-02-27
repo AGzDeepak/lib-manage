@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members | Library Management</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <a class="nav-link" th:href="@{/books}">Books</a>
+            <a class="nav-link active" th:href="@{/members}">Members</a>
+            <a class="nav-link" th:href="@{/loans}">Loans</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <div class="panel-head">
+            <h1>Members</h1>
+            <a class="btn" th:href="@{/members/new}" sec:authorize="hasRole('ADMIN')">Add Member</a>
+        </div>
+
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(members)}">
+                    <td colspan="4">No members found.</td>
+                </tr>
+                <tr th:each="member : ${members}">
+                    <td th:text="${member.name}">Name</td>
+                    <td th:text="${member.email}">email@example.com</td>
+                    <td th:text="${member.phone ?: '-'}">-</td>
+                    <td class="row-actions">
+                        <div class="row-actions" sec:authorize="hasRole('ADMIN')">
+                            <a class="btn btn-light" th:href="@{/members/{id}/edit(id=${member.id})}">Edit</a>
+                            <form th:action="@{/members/{id}/delete(id=${member.id})}" method="post">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this member?')">Delete</button>
+                            </form>
+                        </div>
+                        <span sec:authorize="hasRole('USER')">View only</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

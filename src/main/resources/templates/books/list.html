@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books | Library Management</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/dashboard}">Library Management</a>
+        <nav class="nav">
+            <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
+            <a class="nav-link active" th:href="@{/books}">Books</a>
+            <a class="nav-link" th:href="@{/members}">Members</a>
+            <a class="nav-link" th:href="@{/loans}">Loans</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="nav-link nav-button">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <div class="panel-head">
+            <h1>Books</h1>
+            <a class="btn" th:href="@{/books/new}" sec:authorize="hasRole('ADMIN')">Add Book</a>
+        </div>
+
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Total</th>
+                    <th>Available</th>
+                    <th>Borrowed</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(books)}">
+                    <td colspan="7">No books found.</td>
+                </tr>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.title}">Title</td>
+                    <td th:text="${book.author}">Author</td>
+                    <td th:text="${book.isbn}">ISBN</td>
+                    <td th:text="${book.totalCopies}">0</td>
+                    <td th:text="${book.availableCopies}">0</td>
+                    <td th:text="${book.borrowedCopies}">0</td>
+                    <td class="row-actions">
+                        <div class="row-actions" sec:authorize="hasRole('ADMIN')">
+                            <a class="btn btn-light" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
+                            <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this book?')">Delete</button>
+                            </form>
+                        </div>
+                        <span sec:authorize="hasRole('USER')">View only</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>
